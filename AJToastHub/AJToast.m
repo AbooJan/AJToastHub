@@ -20,11 +20,12 @@
 //=============end=============
 
 
+
 // 默认消失时间
 static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 
-
 @interface AJToast()
+
 @property (nonatomic, strong) AJToastViewController *toastVC;
 /// 默认是 ToastPositionBottom
 @property (nonatomic, assign) ToastPosition toastPosition;
@@ -32,6 +33,8 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 @property (nonatomic, strong) NSMutableArray<ToastMessage *> *messageArray;
 /// 显示标记
 @property (nonatomic, assign) BOOL isShowing;
+/// 当前显示模式
+@property (nonatomic, assign) ToastType currentToastType;
 
 @end
 
@@ -77,17 +80,34 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 - (void)dismiss
 {
     __weak __typeof(&*self) weakSelf = self;
-    [self.toastVC dismissToast:^{
+    
+    if (self.currentToastType == ToastTypeHub) {
+        [self.toastVC dismissHub:^{
+            
+            weakSelf.isShowing = NO;
+            
+            if (weakSelf.messageArray.count > 0) {
+                [weakSelf showMessage:nil];
+            }else{
+                weakSelf.hidden = YES;
+            }
+            
+        }];
         
-        self.isShowing = NO;
+    }else{
         
-        if (weakSelf.messageArray.count > 0) {
-            [self showMessage:nil];
-        }else{
-            weakSelf.hidden = YES;
-        }
-        
-    }];
+        [self.toastVC dismissToast:^{
+            
+            weakSelf.isShowing = NO;
+            
+            if (weakSelf.messageArray.count > 0) {
+                [weakSelf showMessage:nil];
+            }else{
+                weakSelf.hidden = YES;
+            }
+            
+        }];
+    }
 }
 
 #pragma mark - Toast
@@ -146,6 +166,9 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
     [self addMessage:message duration:dismissTime];
     
     if (!self.isShowing) {
+        
+        self.currentToastType = ToastTypeSimmpleText;
+        
         self.isShowing = YES;
         
         ToastMessage *toast = [self oldestMessage];
@@ -185,6 +208,19 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 
 - (void)showHub:(NSString *)message
 {
+    if (self.isShowing) {
+        return;
+    }
+    
+    self.currentToastType = ToastTypeHub;
+    
+    self.toastVC.messageStr = message;
+    self.hidden = NO;
+    self.isShowing = YES;
+    
+    [self.toastVC showHub:^{
+        //
+    }];
     
 }
 

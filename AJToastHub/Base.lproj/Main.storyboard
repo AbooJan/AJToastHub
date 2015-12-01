@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
@@ -26,25 +27,53 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c11-1Z-TgZ">
-                                <rect key="frame" x="270" y="82" width="60" height="30"/>
+                                <rect key="frame" x="250" y="82" width="100" height="30"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="YFB-J0-ycf"/>
+                                    <constraint firstAttribute="width" constant="100" id="YFB-J0-ycf"/>
                                     <constraint firstAttribute="height" constant="30" id="yqQ-La-IWI"/>
                                 </constraints>
-                                <state key="normal" title="显示"/>
+                                <state key="normal" title="显示Toast"/>
                                 <connections>
                                     <action selector="showToast:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GZv-gc-6ji"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LmD-AS-eF2">
+                                <rect key="frame" x="250" y="128" width="100" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Tvu-gY-A3l"/>
+                                    <constraint firstAttribute="width" constant="100" id="nrW-qq-fH8"/>
+                                </constraints>
+                                <state key="normal" title="显示Hub"/>
+                                <connections>
+                                    <action selector="showHub:" destination="BYZ-38-t0r" eventType="touchUpInside" id="M9a-sz-6r6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFg-If-XmR">
+                                <rect key="frame" x="250" y="166" width="100" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="htB-zp-xwu"/>
+                                    <constraint firstAttribute="width" constant="100" id="qZY-d1-rhd"/>
+                                </constraints>
+                                <state key="normal" title="隐藏Hub"/>
+                                <connections>
+                                    <action selector="dismissHub:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ja8-b3-msP"/>
                                 </connections>
                             </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.94117647409439087" green="0.94117647409439087" blue="0.94117647409439087" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="LmD-AS-eF2" firstAttribute="top" secondItem="c11-1Z-TgZ" secondAttribute="bottom" constant="16" id="8x1-Wj-1Vx"/>
                             <constraint firstItem="qWR-Mx-PUA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="Hed-tt-PyU"/>
+                            <constraint firstItem="cFg-If-XmR" firstAttribute="top" secondItem="LmD-AS-eF2" secondAttribute="bottom" constant="8" id="Ix1-0D-Vtk"/>
                             <constraint firstItem="c11-1Z-TgZ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NKm-WI-pyE"/>
                             <constraint firstAttribute="trailing" secondItem="qWR-Mx-PUA" secondAttribute="trailing" constant="16" id="R0P-HE-fTO"/>
                             <constraint firstItem="qWR-Mx-PUA" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="16" id="Uu7-hw-lYJ"/>
+                            <constraint firstItem="LmD-AS-eF2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Zm6-Zv-6au"/>
+                            <constraint firstItem="cFg-If-XmR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aWH-PF-sue"/>
                             <constraint firstItem="c11-1Z-TgZ" firstAttribute="top" secondItem="qWR-Mx-PUA" secondAttribute="bottom" constant="16" id="kIt-PU-pCx"/>
                         </constraints>
                     </view>

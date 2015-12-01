@@ -23,8 +23,9 @@ static const CGFloat DEFAULT_TOAST_WIDTH  = 50.0;
 static const CGFloat TOAST_MAX_WIDTH      = 300.0;
 static const CGFloat TOAST_SPACE_WIDTH    = 8.0;
 
-static const CGFloat DEFAUTL_HUB_HEIGHT   = 100.0;
-static const CGFloat DEFAULT_HUB_WIDTH    = 100.0;
+static const CGFloat DEFAUTL_HUB_HEIGHT   = 80.0;
+static const CGFloat DEFAULT_HUB_WIDTH    = 80.0;
+static const CGFloat DEFAULT_HUB_MESSAGE_HEIGHT = 20.0;
 
 static const CGFloat DEFAULT_ALPHA  = 0.7;
 
@@ -35,7 +36,6 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 @property (nonatomic, strong) UILabel *toastMessageLabel;
 
 @property (nonatomic, strong) UIView *hubContainView;
-@property (nonatomic, strong) UILabel *hubMessageLabel;
 
 @end
 
@@ -87,14 +87,30 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 - (void)setupHubView
 {
     // 视图容器
-//    self.hubContainView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEFAULT_HUB_WIDTH, DEFAUTL_HUB_HEIGHT)];
-//    self.hubContainView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight / 2.0);
-//    self.hubContainView
+    self.hubContainView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEFAULT_HUB_WIDTH, DEFAUTL_HUB_HEIGHT)];
+    self.hubContainView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight / 2.0);
+    self.hubContainView.backgroundColor = kBgColor;
+    self.hubContainView.alpha = 0.0;
+    self.hubContainView.layer.cornerRadius = 5.0;
+    self.hubContainView.layer.masksToBounds = YES;
+    [self.view addSubview:self.hubContainView];
     
     // 菊花
-    
+    UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    loadingView.bounds = CGRectMake(0, 0, 50.0, 50.0);
+    loadingView.center = CGPointMake(DEFAULT_HUB_WIDTH / 2.0, DEFAUTL_HUB_HEIGHT / 2.0 - DEFAULT_HUB_MESSAGE_HEIGHT / 2.0);
+    loadingView.tag = 1001;
+    [loadingView startAnimating];
+    [self.hubContainView addSubview:loadingView];
     
     // 消息
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, DEFAULT_HUB_WIDTH - TOAST_SPACE_WIDTH * 2.0, DEFAULT_HUB_MESSAGE_HEIGHT)];
+    messageLabel.center = CGPointMake(DEFAULT_HUB_WIDTH / 2.0, CGRectGetMaxY(loadingView.frame) + TOAST_SPACE_WIDTH / 2.0);
+    messageLabel.font = [UIFont systemFontOfSize:12.0];
+    messageLabel.textColor = [UIColor whiteColor];
+    messageLabel.textAlignment = NSTextAlignmentCenter;
+    messageLabel.tag = 1002;
+    [self.hubContainView addSubview:messageLabel];
 }
 
 #pragma mark - 逻辑处理
@@ -175,15 +191,10 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     positionAnimation.toValue = @(targetY);
     positionAnimation.springBounciness = 10;
     
-    POPSpringAnimation *scaleAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
-    scaleAnimation.springBounciness = 20;
-    scaleAnimation.fromValue = [NSValue valueWithCGPoint:CGPointMake(1.2, 1.4)];
-    
     POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
     opacityAnimation.toValue = @(DEFAULT_ALPHA);
     
     [self.toastContainView.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation1"];
-    //    [self.layer pop_addAnimation:scaleAnimation forKey:@"scaleAnimation"];
     [self.toastContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation1"];
     
     [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL isFinish) {
@@ -217,14 +228,74 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 
 #pragma mark - Hub
 
+- (void)refreshHubView
+{
+    if (self.messageStr == nil || [self.messageStr isEqualToString:@""]) {
+        
+        self.hubContainView.width = DEFAULT_HUB_WIDTH - 20.0;
+        self.hubContainView.height = DEFAUTL_HUB_HEIGHT - 20.0;
+        
+        UIActivityIndicatorView *loadingView = (UIActivityIndicatorView *)[self.hubContainView viewWithTag:1001];
+        loadingView.center = CGPointMake(self.hubContainView.width  / 2.0, self.hubContainView.height  / 2.0);
+        
+    }else{
+        
+        UIActivityIndicatorView *loadingView = (UIActivityIndicatorView *)[self.hubContainView viewWithTag:1001];
+        loadingView.center = CGPointMake(loadingView.center.x, DEFAUTL_HUB_HEIGHT / 2.0 - DEFAULT_HUB_MESSAGE_HEIGHT / 2.0);
+        
+        self.hubContainView.width = DEFAULT_HUB_WIDTH;
+        self.hubContainView.height = DEFAUTL_HUB_HEIGHT;
+    }
+}
+
 - (void)showHub:(void (^)())finished
 {
-    //
+    // 设置数据
+    UILabel *messageLabel = (UILabel *)[self.hubContainView viewWithTag:1002];
+    messageLabel.text = self.messageStr;
+    
+    // 调整菊花中点
+    [self refreshHubView];
+    
+    // --- 动画 ---
+    // 初始化弹窗中点
+    self.hubContainView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight + self.hubContainView.height);
+    
+    // 目标中点Y坐标
+    CGFloat targetY = kScreenHeight / 2.0;
+    
+    POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+    positionAnimation.toValue = @(targetY);
+    positionAnimation.springBounciness = 10;
+    
+    POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    opacityAnimation.toValue = @(DEFAULT_ALPHA);
+    
+    [self.hubContainView.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation3"];
+    [self.hubContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation3"];
+    
+    [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL isFinish) {
+        finished();
+    }];
 }
 
 - (void)dismissHub:(void (^)())finished
 {
-    //
+    // 设置消失时的Y坐标
+    CGFloat animationPositionY = kScreenHeight + self.hubContainView.height;
+    
+    POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    opacityAnimation.toValue = @(0.0);
+    
+    POPBasicAnimation *offscreenAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+    offscreenAnimation.toValue = @(animationPositionY);
+    [offscreenAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
+        finished();
+    }];
+    
+    [self.hubContainView.layer pop_addAnimation:offscreenAnimation forKey:@"offscreenAnimation4"];
+    [self.hubContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation4"];
+    
 }
 
 @end

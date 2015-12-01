@@ -19,10 +19,10 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor colorWithWhite:0.941 alpha:1.000];
-    
-//    [self performSelector:@selector(showWin) withObject:nil afterDelay:2.0];
-//    [self performSelector:@selector(dismissWin) withObject:nil afterDelay:6.0];
 }
+
+#pragma mark - Toast
+
 - (IBAction)showToast:(id)sender
 {
     [self showWin];
@@ -63,6 +63,30 @@
 }
 
 - (void)dismissWin
+{
+    [[AJToast sharedInstance] dismiss];
+}
+
+
+#pragma mark - Hub
+
+- (IBAction)showHub:(id)sender
+{
+    [[AJToast sharedInstance] showHub:@"正在登录..."];
+//    [[AJToast sharedInstance] showHub:@""];
+    
+    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
+    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
+    
+    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
+}
+
+- (IBAction)dismissHub:(id)sender
+{
+    [self hideHub];
+}
+
+- (void)hideHub
 {
     [[AJToast sharedInstance] dismiss];
 }
