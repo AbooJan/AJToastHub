@@ -1,0 +1,70 @@
+//
+//  ViewController.m
+//  AJToastHub
+//
+//  Created by 钟宝健 on 15/11/27.
+//  Copyright © 2015年 钟宝健. All rights reserved.
+//
+
+#import "ViewController.h"
+#import "AJToast.h"
+
+@interface ViewController ()
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor colorWithWhite:0.941 alpha:1.000];
+    
+//    [self performSelector:@selector(showWin) withObject:nil afterDelay:2.0];
+//    [self performSelector:@selector(dismissWin) withObject:nil afterDelay:6.0];
+}
+- (IBAction)showToast:(id)sender
+{
+    [self showWin];
+}
+
+- (void)showWin
+{
+//    [[AJToast sharedInstance] showMessage:@"网络不给力~"];
+    
+//    AJToast *toast = [AJToast sharedInstance];
+//    [toast showMessage:@"服务器开小差了~" afterDelay:3.0];
+    
+    
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-1-" position:ToastPositionCenter afterDelay:2.0];
+//    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionCenter];
+//    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionCenter];
+//    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-5-" position:ToastPositionCenter afterDelay:6.0];
+    
+    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
+    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
+    [self performSelector:@selector(otherThreadMesaage4) withObject:nil];
+}
+
+- (void)otherThreadMesaage2
+{
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionCenter];
+}
+
+- (void)otherThreadMesaage3
+{
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionCenter afterDelay:5.0];
+}
+
+- (void)otherThreadMesaage4
+{
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
+}
+
+- (void)dismissWin
+{
+    [[AJToast sharedInstance] dismiss];
+}
+
+@end
