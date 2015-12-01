@@ -36,11 +36,11 @@
 //    [toast showMessage:@"服务器开小差了~" afterDelay:3.0];
     
     
-    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-1-" position:ToastPositionCenter afterDelay:2.0];
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-1-" position:ToastPositionBottom afterDelay:2.0];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionCenter];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionCenter];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
-    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-5-" position:ToastPositionCenter afterDelay:6.0];
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-5-" position:ToastPositionBottom afterDelay:6.0];
     
     [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
     [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
@@ -49,17 +49,17 @@
 
 - (void)otherThreadMesaage2
 {
-    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionCenter];
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionBottom];
 }
 
 - (void)otherThreadMesaage3
 {
-    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionCenter afterDelay:5.0];
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionBottom afterDelay:5.0];
 }
 
 - (void)otherThreadMesaage4
 {
-    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionBottom];
 }
 
 - (void)dismissWin
