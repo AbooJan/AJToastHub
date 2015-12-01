@@ -15,13 +15,26 @@ typedef NS_ENUM(NSInteger, ToastPosition)
     ToastPositionTop
 };
 
+typedef NS_ENUM(NSInteger, ToastType)
+{
+    ToastTypeSimmpleText,    // 纯文字
+    ToastTypeHub             // 菊花
+};
+
 
 @interface AJToastViewController : UIViewController
-@property (nonatomic, copy) NSString *messageStr;
 
+@property (nonatomic, copy) NSString *messageStr;
+@property (nonatomic, assign) ToastType toastType;
+
+//=======Toast=========
 @property (nonatomic, assign) ToastPosition toastPosition;
 
-- (void)show:(void(^)())finished;
-- (void)dismiss:(void(^)())finished;
+- (void)showToast:(void(^)())finished;
+- (void)dismissToast:(void(^)())finished;
+
+//=======Hub==========
+- (void)showHub:(void(^)())finished;
+- (void)dismissHub:(void(^)())finished;
 
 @end

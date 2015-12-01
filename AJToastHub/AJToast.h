@@ -15,10 +15,16 @@
 
 - (void)dismiss;
 
+//===========Toast===========
+
 - (void)showMessage:(NSString *)message;
 - (void)showMessage:(NSString *)message afterDelay:(NSTimeInterval)dismissTime;
 
 - (void)showMessage:(NSString *)message position:(ToastPosition)position;
 - (void)showMessage:(NSString *)message position:(ToastPosition)position afterDelay:(NSTimeInterval)dismissTime;
+
+
+//===========Hub=============
+- (void)showHub:(NSString *)message;
 
 @end

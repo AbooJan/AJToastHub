@@ -77,7 +77,7 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 - (void)dismiss
 {
     __weak __typeof(&*self) weakSelf = self;
-    [self.toastVC dismiss:^{
+    [self.toastVC dismissToast:^{
         
         self.isShowing = NO;
         
@@ -89,6 +89,8 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
         
     }];
 }
+
+#pragma mark - Toast
 
 #pragma mark 消息队列处理
 - (void)addMessage:(NSString *)message duration:(NSTimeInterval)duration
@@ -154,7 +156,7 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
             self.toastVC.messageStr = oldestMessage;
             self.hidden = NO;
             
-            [self.toastVC show:^{
+            [self.toastVC showToast:^{
                 //
             }];
             
@@ -176,6 +178,14 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 {
     self.toastPosition = position;
     [self showMessage:message afterDelay:dismissTime];
+}
+
+
+#pragma mark - Hub
+
+- (void)showHub:(NSString *)message
+{
+    
 }
 
 @end

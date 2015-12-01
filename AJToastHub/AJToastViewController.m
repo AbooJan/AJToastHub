@@ -14,22 +14,34 @@
 #define kScreenWidth    [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight   [UIScreen mainScreen].bounds.size.height
 #define kMessageFont    [UIFont systemFontOfSize:13.0]
-#define kDefaultCenter  CGPointMake(kScreenWidth / 2.0, kScreenHeight - 100.0 - DEFAULT_HEIGHT)
+#define kDefaultCenter  CGPointMake(kScreenWidth / 2.0, kScreenHeight - 100.0 - DEFAULT_TOAST_HEIGHT)
+#define kBgColor        [UIColor colorWithWhite:0.200 alpha:1.000]
 
-static const CGFloat DEFAULT_HEIGHT = 35.0;
-static const CGFloat DEFAULT_WIDTH  = 50.0;
-static const CGFloat MAX_WIDTH      = 300.0;
-static const CGFloat SPACE_WIDTH    = 8.0;
+
+static const CGFloat DEFAULT_TOAST_HEIGHT = 35.0;
+static const CGFloat DEFAULT_TOAST_WIDTH  = 50.0;
+static const CGFloat TOAST_MAX_WIDTH      = 300.0;
+static const CGFloat TOAST_SPACE_WIDTH    = 8.0;
+
+static const CGFloat DEFAUTL_HUB_HEIGHT   = 100.0;
+static const CGFloat DEFAULT_HUB_WIDTH    = 100.0;
+
 static const CGFloat DEFAULT_ALPHA  = 0.7;
 
+
 @interface AJToastViewController ()
-@property (nonatomic, strong) UIView *containView;
-@property (nonatomic, strong) UILabel *messageLabel;
+
+@property (nonatomic, strong) UIView *toastContainView;
+@property (nonatomic, strong) UILabel *toastMessageLabel;
+
+@property (nonatomic, strong) UIView *hubContainView;
+@property (nonatomic, strong) UILabel *hubMessageLabel;
+
 @end
 
 @implementation AJToastViewController
 
-#pragma mark - <初始化>
+#pragma mark - 初始化
 
 - (BOOL)prefersStatusBarHidden
 {
@@ -46,60 +58,73 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
    
     self.view.backgroundColor = [UIColor clearColor];
 
-    [self setupView];
+    [self setupToastView];
+    [self setupHubView];
 }
 
-- (void)setupView
+- (void)setupToastView
 {
-    
     // 视图容器
-    self.containView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT)];
-    self.containView.center = kDefaultCenter;
-    self.containView.backgroundColor = [UIColor colorWithWhite:0.200 alpha:1.000];
-    self.containView.alpha = 0.0;
-    self.containView.layer.cornerRadius = 5.0;
-    self.containView.layer.masksToBounds = YES;
-    [self.view addSubview:self.containView];
+    self.toastContainView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEFAULT_TOAST_WIDTH, DEFAULT_TOAST_HEIGHT)];
+    self.toastContainView.center = kDefaultCenter;
+    self.toastContainView.backgroundColor = kBgColor;
+    self.toastContainView.alpha = 0.0;
+    self.toastContainView.layer.cornerRadius = 5.0;
+    self.toastContainView.layer.masksToBounds = YES;
+    [self.view addSubview:self.toastContainView];
     
     // 消息
-    CGFloat messageLabelWidth = DEFAULT_WIDTH - SPACE_WIDTH * 2.0;
-    CGFloat messageLabelHeight = DEFAULT_HEIGHT - SPACE_WIDTH * 2.0;
-    self.messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(SPACE_WIDTH, SPACE_WIDTH, messageLabelWidth, messageLabelHeight)];
-    self.messageLabel.textColor = [UIColor whiteColor];
-    self.messageLabel.textAlignment = NSTextAlignmentCenter;
-    self.messageLabel.font = kMessageFont;
-    self.messageLabel.numberOfLines = 0;
-    [self.containView addSubview:self.messageLabel];
+    CGFloat messageLabelWidth = DEFAULT_TOAST_WIDTH - TOAST_SPACE_WIDTH * 2.0;
+    CGFloat messageLabelHeight = DEFAULT_TOAST_HEIGHT - TOAST_SPACE_WIDTH * 2.0;
+    self.toastMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(TOAST_SPACE_WIDTH, TOAST_SPACE_WIDTH, messageLabelWidth, messageLabelHeight)];
+    self.toastMessageLabel.textColor = [UIColor whiteColor];
+    self.toastMessageLabel.textAlignment = NSTextAlignmentCenter;
+    self.toastMessageLabel.font = kMessageFont;
+    self.toastMessageLabel.numberOfLines = 0;
+    [self.toastContainView addSubview:self.toastMessageLabel];
 }
 
-#pragma mark - <逻辑处理>
+- (void)setupHubView
+{
+    // 视图容器
+//    self.hubContainView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, DEFAULT_HUB_WIDTH, DEFAUTL_HUB_HEIGHT)];
+//    self.hubContainView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight / 2.0);
+//    self.hubContainView
+    
+    // 菊花
+    
+    
+    // 消息
+}
+
+#pragma mark - 逻辑处理
 
 - (void)refreshViewFrameWithMessage
 {
     // 先宽高计算
-    CGFloat contentWidth = [_messageStr widthWithFont:kMessageFont constrainedToHeight:DEFAULT_HEIGHT - SPACE_WIDTH * 2.0];
+    CGFloat contentWidth = [_messageStr widthWithFont:kMessageFont constrainedToHeight:DEFAULT_TOAST_HEIGHT - TOAST_SPACE_WIDTH * 2.0];
     
-    CGFloat maxContentWidth = MAX_WIDTH - SPACE_WIDTH * 2.0;
+    CGFloat maxContentWidth = TOAST_MAX_WIDTH - TOAST_SPACE_WIDTH * 2.0;
     if (contentWidth > maxContentWidth) {
         
         CGFloat contentHeight = [_messageStr heightWithFont:kMessageFont constrainedToWidth:maxContentWidth];
         
         // 调整父视图大小
-        self.containView.width = MAX_WIDTH;
-        self.containView.height = contentHeight + SPACE_WIDTH * 2.0;
+        self.toastContainView.width = TOAST_MAX_WIDTH;
+        self.toastContainView.height = contentHeight + TOAST_SPACE_WIDTH * 2.0;
         
         // 调整消息大小
-        self.messageLabel.width = maxContentWidth;
-        self.messageLabel.height = contentHeight;
+        self.toastMessageLabel.width = maxContentWidth;
+        self.toastMessageLabel.height = contentHeight;
         
     }else{
         
-        self.containView.width = contentWidth + SPACE_WIDTH * 2.0;
-        self.messageLabel.width = contentWidth;
+        self.toastContainView.width = contentWidth + TOAST_SPACE_WIDTH * 2.0;
+        self.toastMessageLabel.width = contentWidth;
     }
     
     // 调整内容视图中点
-    self.containView.center = kDefaultCenter;
+    self.toastContainView.center = kDefaultCenter;
 }
 
 #pragma mark - SET方法重写
@@ -107,19 +132,21 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 {
     _messageStr = messageStr;
     
-    self.messageLabel.text = _messageStr;
+    self.toastMessageLabel.text = _messageStr;
     
     [self refreshViewFrameWithMessage];
 }
 
+#pragma mark - Toast
+
 #pragma mark 显示隐藏
-- (void)show:(void (^)())finished
+- (void)showToast:(void (^)())finished
 {
     
     // 初始化弹窗中点
-    self.containView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight + self.containView.height);
+    self.toastContainView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight + self.toastContainView.height);
     if (self.toastPosition == ToastPositionTop) {
-        self.containView.center = CGPointMake(kScreenWidth / 2.0, - self.containView.height);
+        self.toastContainView.center = CGPointMake(kScreenWidth / 2.0, - self.toastContainView.height);
     }
     
     // 目标中点Y坐标
@@ -127,7 +154,7 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     CGFloat targetY;
     switch (self.toastPosition) {
         case ToastPositionBottom: {
-            targetY = kScreenHeight - spaceWidth - self.containView.height / 2.0;
+            targetY = kScreenHeight - spaceWidth - self.toastContainView.height / 2.0;
             break;
         }
         case ToastPositionCenter: {
@@ -135,7 +162,7 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
             break;
         }
         case ToastPositionTop: {
-            targetY = spaceWidth + self.containView.height / 2.0;
+            targetY = spaceWidth + self.toastContainView.height / 2.0;
             break;
         }
         default: {
@@ -155,22 +182,22 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
     opacityAnimation.toValue = @(DEFAULT_ALPHA);
     
-    [self.containView.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation1"];
+    [self.toastContainView.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation1"];
     //    [self.layer pop_addAnimation:scaleAnimation forKey:@"scaleAnimation"];
-    [self.containView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation1"];
+    [self.toastContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation1"];
     
     [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL isFinish) {
         finished();
     }];
 }
 
-- (void)dismiss:(void (^)())finished
+- (void)dismissToast:(void (^)())finished
 {
     // 设置消失时的Y坐标
-    CGFloat animationPositionY = kScreenHeight + self.containView.height;
+    CGFloat animationPositionY = kScreenHeight + self.toastContainView.height;
     
     if(self.toastPosition == ToastPositionTop){
-        animationPositionY = - self.containView.height;
+        animationPositionY = - self.toastContainView.height;
     }
     
     POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
@@ -182,9 +209,22 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
         finished();
     }];
     
-    [self.containView.layer pop_addAnimation:offscreenAnimation forKey:@"offscreenAnimation2"];
-    [self.containView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation2"];
+    [self.toastContainView.layer pop_addAnimation:offscreenAnimation forKey:@"offscreenAnimation2"];
+    [self.toastContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation2"];
     
+}
+
+
+#pragma mark - Hub
+
+- (void)showHub:(void (^)())finished
+{
+    //
+}
+
+- (void)dismissHub:(void (^)())finished
+{
+    //
 }
 
 @end
