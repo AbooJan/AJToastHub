@@ -72,7 +72,7 @@
 
 - (IBAction)showHub:(id)sender
 {
-    [[AJToast sharedInstance] showHub:@"正在登录..."];
+    [[AJToast sharedInstance] showHub:@"拼命加载中..."];
 //    [[AJToast sharedInstance] showHub:@""];
     
     [self performSelector:@selector(otherThreadMesaage2) withObject:nil];

@@ -11,21 +11,24 @@
 #import "UIView+Extend.h"
 #import <POP/POP.h>
 
-#define kScreenWidth    [UIScreen mainScreen].bounds.size.width
-#define kScreenHeight   [UIScreen mainScreen].bounds.size.height
-#define kMessageFont    [UIFont systemFontOfSize:13.0]
-#define kDefaultCenter  CGPointMake(kScreenWidth / 2.0, kScreenHeight - 100.0 - DEFAULT_TOAST_HEIGHT)
-#define kBgColor        [UIColor colorWithWhite:0.200 alpha:1.000]
+#define kScreenWidth            [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight           [UIScreen mainScreen].bounds.size.height
+#define kToastMessageFont       [UIFont systemFontOfSize:13.0]
+#define kHubMessageFont         [UIFont systemFontOfSize:12.0]
+#define kDefaultCenter          CGPointMake(kScreenWidth / 2.0, kScreenHeight - 100.0 - DEFAULT_TOAST_HEIGHT)
+#define kBgColor                [UIColor colorWithWhite:0.098 alpha:1.000]
 
 
 static const CGFloat DEFAULT_TOAST_HEIGHT = 35.0;
 static const CGFloat DEFAULT_TOAST_WIDTH  = 50.0;
 static const CGFloat TOAST_MAX_WIDTH      = 300.0;
-static const CGFloat TOAST_SPACE_WIDTH    = 8.0;
+
+static const CGFloat SPACE_WIDTH    = 8.0;
 
 static const CGFloat DEFAUTL_HUB_HEIGHT   = 80.0;
 static const CGFloat DEFAULT_HUB_WIDTH    = 80.0;
 static const CGFloat DEFAULT_HUB_MESSAGE_HEIGHT = 20.0;
+static const CGFloat HUB_MAX_WIDTH        = 150.0;
 
 static const CGFloat DEFAULT_ALPHA  = 0.7;
 
@@ -73,12 +76,12 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     self.toastContainView.layer.masksToBounds = YES;
     
     // 消息
-    CGFloat messageLabelWidth = DEFAULT_TOAST_WIDTH - TOAST_SPACE_WIDTH * 2.0;
-    CGFloat messageLabelHeight = DEFAULT_TOAST_HEIGHT - TOAST_SPACE_WIDTH * 2.0;
-    self.toastMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(TOAST_SPACE_WIDTH, TOAST_SPACE_WIDTH, messageLabelWidth, messageLabelHeight)];
+    CGFloat messageLabelWidth = DEFAULT_TOAST_WIDTH - SPACE_WIDTH * 2.0;
+    CGFloat messageLabelHeight = DEFAULT_TOAST_HEIGHT - SPACE_WIDTH * 2.0;
+    self.toastMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(SPACE_WIDTH, SPACE_WIDTH, messageLabelWidth, messageLabelHeight)];
     self.toastMessageLabel.textColor = [UIColor whiteColor];
     self.toastMessageLabel.textAlignment = NSTextAlignmentCenter;
-    self.toastMessageLabel.font = kMessageFont;
+    self.toastMessageLabel.font = kToastMessageFont;
     self.toastMessageLabel.numberOfLines = 0;
     [self.toastContainView addSubview:self.toastMessageLabel];
 }
@@ -102,9 +105,9 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     [self.hubContainView addSubview:loadingView];
     
     // 消息
-    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, DEFAULT_HUB_WIDTH - TOAST_SPACE_WIDTH * 2.0, DEFAULT_HUB_MESSAGE_HEIGHT)];
-    messageLabel.center = CGPointMake(DEFAULT_HUB_WIDTH / 2.0, CGRectGetMaxY(loadingView.frame) + TOAST_SPACE_WIDTH / 2.0);
-    messageLabel.font = [UIFont systemFontOfSize:12.0];
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, DEFAULT_HUB_WIDTH - SPACE_WIDTH * 2.0, DEFAULT_HUB_MESSAGE_HEIGHT)];
+    messageLabel.center = CGPointMake(DEFAULT_HUB_WIDTH / 2.0, CGRectGetMaxY(loadingView.frame) + SPACE_WIDTH / 2.0);
+    messageLabel.font = kHubMessageFont;
     messageLabel.textColor = [UIColor whiteColor];
     messageLabel.textAlignment = NSTextAlignmentCenter;
     messageLabel.tag = 1002;
@@ -116,16 +119,16 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 - (void)refreshViewFrameWithMessage
 {
     // 先宽高计算
-    CGFloat contentWidth = [_messageStr widthWithFont:kMessageFont constrainedToHeight:DEFAULT_TOAST_HEIGHT - TOAST_SPACE_WIDTH * 2.0];
+    CGFloat contentWidth = [_messageStr widthWithFont:kToastMessageFont constrainedToHeight:DEFAULT_TOAST_HEIGHT - SPACE_WIDTH * 2.0];
     
-    CGFloat maxContentWidth = TOAST_MAX_WIDTH - TOAST_SPACE_WIDTH * 2.0;
+    CGFloat maxContentWidth = TOAST_MAX_WIDTH - SPACE_WIDTH * 2.0;
     if (contentWidth > maxContentWidth) {
         
-        CGFloat contentHeight = [_messageStr heightWithFont:kMessageFont constrainedToWidth:maxContentWidth];
+        CGFloat contentHeight = [_messageStr heightWithFont:kToastMessageFont constrainedToWidth:maxContentWidth];
         
         // 调整父视图大小
         self.toastContainView.width = TOAST_MAX_WIDTH;
-        self.toastContainView.height = contentHeight + TOAST_SPACE_WIDTH * 2.0;
+        self.toastContainView.height = contentHeight + SPACE_WIDTH * 2.0;
         
         // 调整消息大小
         self.toastMessageLabel.width = maxContentWidth;
@@ -133,7 +136,7 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
         
     }else{
         
-        self.toastContainView.width = contentWidth + TOAST_SPACE_WIDTH * 2.0;
+        self.toastContainView.width = contentWidth + SPACE_WIDTH * 2.0;
         self.toastMessageLabel.width = contentWidth;
     }
     
@@ -244,11 +247,33 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
         
     }else{
         
-        UIActivityIndicatorView *loadingView = (UIActivityIndicatorView *)[self.hubContainView viewWithTag:1001];
-        loadingView.center = CGPointMake(loadingView.center.x, DEFAUTL_HUB_HEIGHT / 2.0 - DEFAULT_HUB_MESSAGE_HEIGHT / 2.0);
+        // 计算文字长度
+        CGFloat width = [self.messageStr widthWithFont:kHubMessageFont constrainedToHeight:DEFAULT_HUB_MESSAGE_HEIGHT];
+        if (width > (HUB_MAX_WIDTH - 2 * SPACE_WIDTH)) {
+            width = HUB_MAX_WIDTH - 2 * SPACE_WIDTH;
+        }
         
-        self.hubContainView.width = DEFAULT_HUB_WIDTH;
+        // 调整Hub宽度
+        CGFloat hubWidth = width + 2 * SPACE_WIDTH;
+        if (hubWidth > HUB_MAX_WIDTH) {
+            hubWidth = HUB_MAX_WIDTH;
+        }else if (hubWidth < DEFAULT_HUB_WIDTH){
+            hubWidth = DEFAULT_HUB_WIDTH;
+        }else{
+            //
+        }
+        
+        self.hubContainView.width = hubWidth;
         self.hubContainView.height = DEFAUTL_HUB_HEIGHT;
+        
+        // 调整菊花中点
+        UIActivityIndicatorView *loadingView = (UIActivityIndicatorView *)[self.hubContainView viewWithTag:1001];
+        loadingView.center = CGPointMake(hubWidth / 2.0, DEFAUTL_HUB_HEIGHT / 2.0 - DEFAULT_HUB_MESSAGE_HEIGHT / 2.0);
+        
+        // 调整消息位置
+        UILabel *messageLabel = (UILabel *)[self.hubContainView viewWithTag:1002];
+        messageLabel.width = width;
+        messageLabel.center = CGPointMake(hubWidth / 2.0, messageLabel.center.y);
     }
 }
 
