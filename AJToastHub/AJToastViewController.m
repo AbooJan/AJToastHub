@@ -71,7 +71,6 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     self.toastContainView.alpha = 0.0;
     self.toastContainView.layer.cornerRadius = 5.0;
     self.toastContainView.layer.masksToBounds = YES;
-    [self.view addSubview:self.toastContainView];
     
     // 消息
     CGFloat messageLabelWidth = DEFAULT_TOAST_WIDTH - TOAST_SPACE_WIDTH * 2.0;
@@ -93,7 +92,6 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     self.hubContainView.alpha = 0.0;
     self.hubContainView.layer.cornerRadius = 5.0;
     self.hubContainView.layer.masksToBounds = YES;
-    [self.view addSubview:self.hubContainView];
     
     // 菊花
     UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -158,6 +156,8 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 #pragma mark 显示隐藏
 - (void)showToast:(void (^)())finished
 {
+    // 添加到视图中
+    [self.view addSubview:self.toastContainView];
     
     // 初始化弹窗中点
     self.toastContainView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight + self.toastContainView.height);
@@ -216,13 +216,17 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     
     POPBasicAnimation *offscreenAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
     offscreenAnimation.toValue = @(animationPositionY);
-    [offscreenAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
-        finished();
-    }];
+
     
     [self.toastContainView.layer pop_addAnimation:offscreenAnimation forKey:@"offscreenAnimation2"];
     [self.toastContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation2"];
     
+    // 完成回调
+    __weak __typeof(&*self) weakSelf = self;
+    [offscreenAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
+        [weakSelf.toastContainView removeFromSuperview];
+        finished();
+    }];
 }
 
 
@@ -250,6 +254,9 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 
 - (void)showHub:(void (^)())finished
 {
+    // 添加到View中
+    [self.view addSubview:self.hubContainView];
+    
     // 设置数据
     UILabel *messageLabel = (UILabel *)[self.hubContainView viewWithTag:1002];
     messageLabel.text = self.messageStr;
@@ -289,13 +296,20 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     
     POPBasicAnimation *offscreenAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
     offscreenAnimation.toValue = @(animationPositionY);
-    [offscreenAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
-        finished();
-    }];
+
     
     [self.hubContainView.layer pop_addAnimation:offscreenAnimation forKey:@"offscreenAnimation4"];
     [self.hubContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation4"];
     
+    
+    // 完成回调
+    __weak __typeof(&*self) weakSelf = self;
+    [offscreenAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
+        
+        [weakSelf.hubContainView removeFromSuperview];
+        
+        finished();
+    }];
 }
 
 @end
