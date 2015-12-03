@@ -138,6 +138,9 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
         
         self.toastContainView.width = contentWidth + SPACE_WIDTH * 2.0;
         self.toastMessageLabel.width = contentWidth;
+        
+        self.toastContainView.height = DEFAULT_TOAST_HEIGHT;
+        self.toastMessageLabel.height = DEFAULT_TOAST_HEIGHT - SPACE_WIDTH * 2.0;
     }
     
     // 调整内容视图中点

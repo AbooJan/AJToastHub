@@ -36,7 +36,7 @@
 //    [toast showMessage:@"服务器开小差了~" afterDelay:3.0];
     
     
-    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-1-" position:ToastPositionBottom afterDelay:2.0];
+    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-1-服务器开小差了~服务器开小差了~" position:ToastPositionBottom afterDelay:2.0];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionCenter];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionCenter];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
