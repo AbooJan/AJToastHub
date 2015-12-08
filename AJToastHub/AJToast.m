@@ -50,6 +50,8 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
         
         instance.toastVC  = [[AJToastViewController alloc] init];
         instance.toastVC.view.frame = [UIScreen mainScreen].bounds;
+        
+        instance.toastVC.superWindow = instance;
 
         instance.frame = [UIScreen mainScreen].bounds;
         instance.windowLevel = UIWindowLevelStatusBar;

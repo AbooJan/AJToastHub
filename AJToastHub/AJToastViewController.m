@@ -10,6 +10,7 @@
 #import "NSString+Size.h"
 #import "UIView+Extend.h"
 #import <POP/POP.h>
+#import "AJToast.h"
 
 #define kScreenWidth            [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight           [UIScreen mainScreen].bounds.size.height
@@ -141,6 +142,13 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
         
         self.toastContainView.height = DEFAULT_TOAST_HEIGHT;
         self.toastMessageLabel.height = DEFAULT_TOAST_HEIGHT - SPACE_WIDTH * 2.0;
+    }
+    
+    // 调整Window大小
+    if (self.superWindow.toastBackgroundCanClick) {
+        self.superWindow.height = 2.0;
+    }else{
+        self.superWindow.hidden = kScreenHeight;
     }
     
     // 调整内容视图中点
@@ -278,6 +286,9 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
         messageLabel.width = width;
         messageLabel.center = CGPointMake(hubWidth / 2.0, messageLabel.center.y);
     }
+    
+    // 调整Window大小
+    self.superWindow.height = kScreenHeight;
 }
 
 - (void)showHub:(void (^)())finished

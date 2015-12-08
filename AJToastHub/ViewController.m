@@ -30,21 +30,26 @@
 
 - (void)showWin
 {
-//    [[AJToast sharedInstance] showMessage:@"网络不给力~"];
+    // 背景可以点击测试
+    AJToast *toast = [AJToast sharedInstance];
+    toast.toastBackgroundCanClick = YES;
+    [toast showMessage:@"网络不给力~"];
     
+    // 延时显示测试
 //    AJToast *toast = [AJToast sharedInstance];
 //    [toast showMessage:@"服务器开小差了~" afterDelay:3.0];
     
     
-    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-1-服务器开小差了~服务器开小差了~" position:ToastPositionBottom afterDelay:2.0];
+    // 多线程显示测试
+//    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-1" position:ToastPositionBottom afterDelay:2.0];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionCenter];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionCenter];
 //    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
-    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-5-" position:ToastPositionBottom afterDelay:6.0];
-    
-    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
-    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
-    [self performSelector:@selector(otherThreadMesaage4) withObject:nil];
+//    [[AJToast sharedInstance] showMessage:@"兼职猫，喵了个咪-5-" position:ToastPositionBottom afterDelay:6.0];
+//    
+//    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
+//    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
+//    [self performSelector:@selector(otherThreadMesaage4) withObject:nil];
 }
 
 - (void)otherThreadMesaage2
@@ -72,8 +77,8 @@
 
 - (IBAction)showHub:(id)sender
 {
-    [[AJToast sharedInstance] showHub:@"拼命加载中..."];
-//    [[AJToast sharedInstance] showHub:@""];
+//    [[AJToast sharedInstance] showHub:@"拼命加载中..."];
+    [[AJToast sharedInstance] showHub:@""];
     
     [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
     [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
