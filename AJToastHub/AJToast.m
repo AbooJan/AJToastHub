@@ -81,6 +81,10 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 
 - (void)dismiss
 {
+    if (!self.isShowing) {
+        return;
+    }
+    
     __weak __typeof(&*self) weakSelf = self;
     
     if (self.currentToastType == ToastTypeHub) {

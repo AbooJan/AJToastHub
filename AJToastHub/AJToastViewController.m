@@ -288,7 +288,11 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     }
     
     // 调整Window大小
-    self.superWindow.height = kScreenHeight;
+    if (self.superWindow.hubBackgroundCanClick) {
+        self.superWindow.height = 2.0;
+    }else{
+        self.superWindow.height = kScreenHeight;
+    }
 }
 
 - (void)showHub:(void (^)())finished

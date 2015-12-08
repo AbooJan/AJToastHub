@@ -15,6 +15,9 @@
 
 /// 显示Toast时背景是否可点击，默认不可点击
 @property (nonatomic, assign) BOOL toastBackgroundCanClick;
+/// 显示Hub时背景是否可点击，默认不可点击
+@property (nonatomic, assign) BOOL hubBackgroundCanClick;
+
 
 - (void)dismiss;
 

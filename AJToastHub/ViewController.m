@@ -78,11 +78,19 @@
 - (IBAction)showHub:(id)sender
 {
 //    [[AJToast sharedInstance] showHub:@"拼命加载中..."];
-    [[AJToast sharedInstance] showHub:@""];
+//    
+//    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
+//    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
+//    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
     
-    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
-    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
+//    [[AJToast sharedInstance] showHub:@""];
+//    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
     
+    
+    // 可点击测试
+    AJToast *hub = [AJToast sharedInstance];
+    hub.hubBackgroundCanClick = YES;
+    [hub showHub:@""];
     [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
 }
 
