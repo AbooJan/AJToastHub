@@ -6,7 +6,7 @@
 //  Copyright © 2015年 钟宝健. All rights reserved.
 //
 
-#import "AJToast.h"
+#import "AJToastHub.h"
 
 
 //==============消息体==========
@@ -24,7 +24,7 @@
 // 默认消失时间
 static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 
-@interface AJToast()
+@interface AJToastHub()
 
 @property (nonatomic, strong) AJToastViewController *toastVC;
 /// 默认是 ToastPositionBottom
@@ -38,15 +38,15 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 
 @end
 
-@implementation AJToast
+@implementation AJToastHub
 
-+ (AJToast *)sharedInstance
++ (AJToastHub *)sharedInstance
 {
     static dispatch_once_t once;
-    static AJToast * instance;
+    static AJToastHub * instance;
     dispatch_once( &once, ^{
         
-        instance = [[AJToast alloc] init];
+        instance = [[AJToastHub alloc] init];
         
         instance.toastVC  = [[AJToastViewController alloc] init];
         instance.toastVC.view.frame = [UIScreen mainScreen].bounds;

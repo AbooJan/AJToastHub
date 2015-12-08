@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "AJToastViewController.h"
 
-@interface AJToast : UIWindow
+@interface AJToastHub : UIWindow
 
-+(AJToast *)sharedInstance;
++(AJToastHub *)sharedInstance;
 
 /// 显示Toast时背景是否可点击，默认不可点击
 @property (nonatomic, assign) BOOL toastBackgroundCanClick;

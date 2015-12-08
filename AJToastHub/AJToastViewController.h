@@ -21,11 +21,11 @@ typedef NS_ENUM(NSInteger, ToastType)
     ToastTypeHub             // 菊花
 };
 
-@class AJToast;
+@class AJToastHub;
 
 @interface AJToastViewController : UIViewController
 
-@property (nonatomic, weak) AJToast *superWindow;
+@property (nonatomic, weak) AJToastHub *superWindow;
 
 @property (nonatomic, copy) NSString *messageStr;
 @property (nonatomic, assign) ToastType toastType;

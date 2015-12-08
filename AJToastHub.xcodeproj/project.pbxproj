@@ -14,7 +14,7 @@
 		DB1D25F21C0845D3001294A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB1D25F11C0845D3001294A9 /* Assets.xcassets */; };
 		DB1D25F51C0845D3001294A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB1D25F31C0845D3001294A9 /* LaunchScreen.storyboard */; };
 		DB1D25FF1C08460E001294A9 /* AJToastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB1D25FE1C08460E001294A9 /* AJToastViewController.m */; };
-		DB1D26021C084624001294A9 /* AJToast.m in Sources */ = {isa = PBXBuildFile; fileRef = DB1D26011C084624001294A9 /* AJToast.m */; };
+		DB1D26021C084624001294A9 /* AJToastHub.m in Sources */ = {isa = PBXBuildFile; fileRef = DB1D26011C084624001294A9 /* AJToastHub.m */; };
 		DB1D26371C086DA6001294A9 /* NSString+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = DB1D26361C086DA6001294A9 /* NSString+Size.m */; };
 		DB1D263A1C08709B001294A9 /* UIView+Extend.m in Sources */ = {isa = PBXBuildFile; fileRef = DB1D26391C08709B001294A9 /* UIView+Extend.m */; };
 		EC88688B237EE0A2C2794FBA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9B3344B99D730768835792 /* libPods.a */; };
@@ -36,8 +36,8 @@
 		DB1D25F61C0845D3001294A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB1D25FD1C08460E001294A9 /* AJToastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJToastViewController.h; sourceTree = "<group>"; };
 		DB1D25FE1C08460E001294A9 /* AJToastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJToastViewController.m; sourceTree = "<group>"; };
-		DB1D26001C084624001294A9 /* AJToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJToast.h; sourceTree = "<group>"; };
-		DB1D26011C084624001294A9 /* AJToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJToast.m; sourceTree = "<group>"; };
+		DB1D26001C084624001294A9 /* AJToastHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJToastHub.h; sourceTree = "<group>"; };
+		DB1D26011C084624001294A9 /* AJToastHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJToastHub.m; sourceTree = "<group>"; };
 		DB1D26351C086DA6001294A9 /* NSString+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Size.h"; sourceTree = "<group>"; };
 		DB1D26361C086DA6001294A9 /* NSString+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Size.m"; sourceTree = "<group>"; };
 		DB1D26381C08709B001294A9 /* UIView+Extend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extend.h"; sourceTree = "<group>"; };
@@ -125,8 +125,8 @@
 				DB1D26361C086DA6001294A9 /* NSString+Size.m */,
 				DB1D25FD1C08460E001294A9 /* AJToastViewController.h */,
 				DB1D25FE1C08460E001294A9 /* AJToastViewController.m */,
-				DB1D26001C084624001294A9 /* AJToast.h */,
-				DB1D26011C084624001294A9 /* AJToast.m */,
+				DB1D26001C084624001294A9 /* AJToastHub.h */,
+				DB1D26011C084624001294A9 /* AJToastHub.m */,
 			);
 			name = AJToast;
 			sourceTree = "<group>";
@@ -252,7 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB1D26021C084624001294A9 /* AJToast.m in Sources */,
+				DB1D26021C084624001294A9 /* AJToastHub.m in Sources */,
 				DB1D25ED1C0845D3001294A9 /* ViewController.m in Sources */,
 				DB1D25EA1C0845D3001294A9 /* AppDelegate.m in Sources */,
 				DB1D263A1C08709B001294A9 /* UIView+Extend.m in Sources */,

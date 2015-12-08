@@ -10,7 +10,7 @@
 #import "NSString+Size.h"
 #import "UIView+Extend.h"
 #import <POP/POP.h>
-#import "AJToast.h"
+#import "AJToastHub.h"
 
 #define kScreenWidth            [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight           [UIScreen mainScreen].bounds.size.height
@@ -228,16 +228,15 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
     opacityAnimation.toValue = @(0.0);
     
-    POPBasicAnimation *offscreenAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
-    offscreenAnimation.toValue = @(animationPositionY);
-
+    POPSpringAnimation *scaleAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerSize];
+    scaleAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(0.0, self.toastContainView.height)];
     
-    [self.toastContainView.layer pop_addAnimation:offscreenAnimation forKey:@"offscreenAnimation2"];
+    [self.toastContainView.layer pop_addAnimation:scaleAnimation forKey:@"scaleAnimation2"];
     [self.toastContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation2"];
     
     // 完成回调
     __weak __typeof(&*self) weakSelf = self;
-    [offscreenAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
+    [scaleAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
         [weakSelf.toastContainView removeFromSuperview];
         finished();
     }];
