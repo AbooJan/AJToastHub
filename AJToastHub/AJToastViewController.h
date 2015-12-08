@@ -23,7 +23,8 @@ typedef NS_ENUM(NSInteger, ToastPosition)
 @property (nonatomic, weak) AJToast *toastWindow;
 @property (weak, nonatomic) AJHub *hubWindow;
 
-@property (nonatomic, copy) NSString *messageStr;
+@property (nonatomic, copy) NSString *toastMessageStr;
+@property (nonatomic, copy) NSString *hubMessageStr;
 
 //=======Toast=========
 @property (nonatomic, assign) ToastPosition toastPosition;

@@ -11,8 +11,9 @@
 
 @interface AJHub()
 @property (nonatomic, strong) AJToastViewController *toastVC;
-/// 显示标记
-@property (nonatomic, assign) BOOL isShowing;
+/// 显示计数
+@property (nonatomic, assign) NSInteger showCount;
+
 @end
 
 @implementation AJHub
@@ -45,28 +46,24 @@
 
 - (void)dismiss
 {
-    if (!self.isShowing) {
-        return;
+    if (self.showCount > 0) {
+        self.showCount --;
+        
+        if (self.showCount == 0) {
+            __weak __typeof(&*self) weakSelf = self;
+            [self.toastVC dismissHub:^{
+                weakSelf.hidden = YES;
+            }];
+        }
     }
-    
-    __weak __typeof(&*self) weakSelf = self;
-    [self.toastVC dismissHub:^{
-        
-        weakSelf.isShowing = NO;
-        weakSelf.hidden = YES;
-        
-    }];
 }
 
 - (void)showHub:(NSString *)message
 {
-    if (self.isShowing) {
-        return;
-    }
+    self.showCount ++;
     
-    self.toastVC.messageStr = message;
+    self.toastVC.hubMessageStr = message;
     self.hidden = NO;
-    self.isShowing = YES;
     
     [self.toastVC showHub:^{
         //

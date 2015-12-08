@@ -121,12 +121,12 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 - (void)refreshViewFrameWithMessage
 {
     // 先宽高计算
-    CGFloat contentWidth = [_messageStr widthWithFont:kToastMessageFont constrainedToHeight:DEFAULT_TOAST_HEIGHT - SPACE_WIDTH * 2.0];
+    CGFloat contentWidth = [self.toastMessageStr widthWithFont:kToastMessageFont constrainedToHeight:DEFAULT_TOAST_HEIGHT - SPACE_WIDTH * 2.0];
     
     CGFloat maxContentWidth = TOAST_MAX_WIDTH - SPACE_WIDTH * 2.0;
     if (contentWidth > maxContentWidth) {
         
-        CGFloat contentHeight = [_messageStr heightWithFont:kToastMessageFont constrainedToWidth:maxContentWidth];
+        CGFloat contentHeight = [self.toastMessageStr heightWithFont:kToastMessageFont constrainedToWidth:maxContentWidth];
         
         // 调整父视图大小
         self.toastContainView.width = TOAST_MAX_WIDTH;
@@ -157,12 +157,11 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 }
 
 #pragma mark - SET方法重写
-- (void)setMessageStr:(NSString *)messageStr
+
+- (void)setToastMessageStr:(NSString *)toastMessageStr
 {
-    _messageStr = messageStr;
-    
-    self.toastMessageLabel.text = _messageStr;
-    
+    _toastMessageStr = toastMessageStr;
+    self.toastMessageLabel.text = _toastMessageStr;
     [self refreshViewFrameWithMessage];
 }
 
@@ -248,7 +247,7 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 
 - (void)refreshHubView
 {
-    if (self.messageStr == nil || [self.messageStr isEqualToString:@""]) {
+    if (self.hubMessageStr == nil || [self.hubMessageStr isEqualToString:@""]) {
         
         self.hubContainView.width = DEFAULT_HUB_WIDTH - 20.0;
         self.hubContainView.height = DEFAUTL_HUB_HEIGHT - 20.0;
@@ -259,7 +258,7 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     }else{
         
         // 计算文字长度
-        CGFloat width = [self.messageStr widthWithFont:kHubMessageFont constrainedToHeight:DEFAULT_HUB_MESSAGE_HEIGHT];
+        CGFloat width = [self.hubMessageStr widthWithFont:kHubMessageFont constrainedToHeight:DEFAULT_HUB_MESSAGE_HEIGHT];
         if (width > (HUB_MAX_WIDTH - 2 * SPACE_WIDTH)) {
             width = HUB_MAX_WIDTH - 2 * SPACE_WIDTH;
         }
@@ -298,11 +297,15 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
 - (void)showHub:(void (^)())finished
 {
     // 添加到View中
-    [self.view addSubview:self.hubContainView];
+    NSArray *subViews = self.view.subviews;
+    BOOL hadShowing = [subViews containsObject:self.hubContainView];
+    if (!hadShowing) {
+        [self.view addSubview:self.hubContainView];
+    }
     
     // 设置数据
     UILabel *messageLabel = (UILabel *)[self.hubContainView viewWithTag:1002];
-    messageLabel.text = self.messageStr;
+    messageLabel.text = self.hubMessageStr;
     
     // 调整菊花中点
     [self refreshHubView];

@@ -83,11 +83,26 @@
     
     
     // 可点击测试
-    AJHub *hub = [AJHub shareInstance];
-    hub.hubBackgroundCanClick = YES;
-    [hub showHub:@""];
+//    AJHub *hub = [AJHub shareInstance];
+//    hub.hubBackgroundCanClick = YES;
+//    [hub showHub:@""];
 //    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
+    
+    // 多个Hub显示测试
+    AJHub *hub = [AJHub shareInstance];
+    [hub showHub:@""];
+    [self performSelector:@selector(showNewHub) withObject:nil afterDelay:2.0];
 }
+
+- (void)showNewHub
+{
+    AJHub *hub = [AJHub shareInstance];
+    [hub showHub:@"登录中..."];
+    
+    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
+    [self performSelector:@selector(hideHub) withObject:nil afterDelay:9.0];
+}
+
 
 - (IBAction)dismissHub:(id)sender
 {

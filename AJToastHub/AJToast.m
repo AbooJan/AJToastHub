@@ -152,7 +152,7 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
         
         if (oldestMessage) {
             
-            self.toastVC.messageStr = oldestMessage;
+            self.toastVC.toastMessageStr = oldestMessage;
             self.hidden = NO;
             
             [self.toastVC showToast:^{
