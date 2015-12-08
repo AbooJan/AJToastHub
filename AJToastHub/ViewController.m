@@ -7,7 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "AJToastHub.h"
+#import "AJToast.h"
+#import "AJHub.h"
 
 @interface ViewController ()
 
@@ -25,28 +26,28 @@
 
 - (IBAction)showToast:(id)sender
 {
-    [self showWin];
+    [self showToastMessage];
 }
 
-- (void)showWin
+- (void)showToastMessage
 {
     // 背景可以点击测试
-//    AJToastHub *toast = [AJToastHub sharedInstance];
-//    toast.toastBackgroundCanClick = YES;
-//    [toast showMessage:@"网络不给力~"];
+    AJToast *toast = [AJToast shareInstance];
+    toast.toastBackgroundCanClick = YES;
+    [toast showMessage:@"网络不给力~"];
     
     // 延时显示测试
-//    AJToastHub *toast = [AJToastHub sharedInstance];
+//    AJToast *toast = [AJToast shareInstance];
 //    [toast showMessage:@"服务器开小差了~" afterDelay:3.0];
     
     
     // 多线程显示测试
-    [[AJToastHub sharedInstance] showMessage:@"兼职猫，喵了个咪-1" position:ToastPositionBottom afterDelay:2.0];
-//    [[AJToastHub sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionCenter];
-//    [[AJToastHub sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionCenter];
-//    [[AJToastHub sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
-//    [[AJToastHub sharedInstance] showMessage:@"兼职猫，喵了个咪-5-" position:ToastPositionBottom afterDelay:6.0];
-//    
+//    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-1" position:ToastPositionBottom afterDelay:2.0];
+//    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionCenter];
+//    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionCenter];
+//    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
+//    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-5-" position:ToastPositionBottom afterDelay:6.0];
+//
     [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
     [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
     [self performSelector:@selector(otherThreadMesaage4) withObject:nil];
@@ -54,22 +55,17 @@
 
 - (void)otherThreadMesaage2
 {
-    [[AJToastHub sharedInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionBottom];
+    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-2-" position:ToastPositionBottom];
 }
 
 - (void)otherThreadMesaage3
 {
-    [[AJToastHub sharedInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionBottom afterDelay:5.0];
+    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-3-" position:ToastPositionBottom afterDelay:5.0];
 }
 
 - (void)otherThreadMesaage4
 {
-    [[AJToastHub sharedInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionBottom];
-}
-
-- (void)dismissWin
-{
-    [[AJToastHub sharedInstance] dismiss];
+    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionBottom];
 }
 
 
@@ -77,21 +73,20 @@
 
 - (IBAction)showHub:(id)sender
 {
-//    [[AJToastHub sharedInstance] showHub:@"拼命加载中..."];
-//    
-//    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
-//    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
+    // 有内容加载
+//    [[AJHub shareInstance] showHub:@"拼命加载中..."];
 //    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
-    
-//    [[AJToastHub sharedInstance] showHub:@""];
+
+    // 无内容加载
+//    [[AJHub shareInstance] showHub:@""];
 //    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
     
     
     // 可点击测试
-    AJToastHub *hub = [AJToastHub sharedInstance];
+    AJHub *hub = [AJHub shareInstance];
     hub.hubBackgroundCanClick = YES;
     [hub showHub:@""];
-    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
+//    [self performSelector:@selector(hideHub) withObject:nil afterDelay:6.0];
 }
 
 - (IBAction)dismissHub:(id)sender
@@ -101,7 +96,7 @@
 
 - (void)hideHub
 {
-    [[AJToastHub sharedInstance] dismiss];
+    [[AJHub shareInstance] dismiss];
 }
 
 @end

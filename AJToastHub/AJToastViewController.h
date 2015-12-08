@@ -15,20 +15,15 @@ typedef NS_ENUM(NSInteger, ToastPosition)
     ToastPositionTop
 };
 
-typedef NS_ENUM(NSInteger, ToastType)
-{
-    ToastTypeSimmpleText,    // 纯文字
-    ToastTypeHub             // 菊花
-};
-
-@class AJToastHub;
+@class AJToast;
+@class AJHub;
 
 @interface AJToastViewController : UIViewController
 
-@property (nonatomic, weak) AJToastHub *superWindow;
+@property (nonatomic, weak) AJToast *toastWindow;
+@property (weak, nonatomic) AJHub *hubWindow;
 
 @property (nonatomic, copy) NSString *messageStr;
-@property (nonatomic, assign) ToastType toastType;
 
 //=======Toast=========
 @property (nonatomic, assign) ToastPosition toastPosition;

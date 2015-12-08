@@ -1,13 +1,12 @@
 //
-//  AJWindow.m
+//  AJToast.m
 //  AJToastHub
 //
-//  Created by 钟宝健 on 15/11/27.
+//  Created by 钟宝健 on 15/12/8.
 //  Copyright © 2015年 钟宝健. All rights reserved.
 //
 
-#import "AJToastHub.h"
-
+#import "AJToast.h"
 
 //==============消息体==========
 @interface ToastMessage : NSObject
@@ -20,12 +19,11 @@
 //=============end=============
 
 
-
 // 默认消失时间
 static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 
-@interface AJToastHub()
 
+@interface AJToast()
 @property (nonatomic, strong) AJToastViewController *toastVC;
 /// 默认是 ToastPositionBottom
 @property (nonatomic, assign) ToastPosition toastPosition;
@@ -33,26 +31,25 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 @property (nonatomic, strong) NSMutableArray<ToastMessage *> *messageArray;
 /// 显示标记
 @property (nonatomic, assign) BOOL isShowing;
-/// 当前显示模式
-@property (nonatomic, assign) ToastType currentToastType;
-
 @end
 
-@implementation AJToastHub
+@implementation AJToast
 
-+ (AJToastHub *)sharedInstance
+#pragma mark - <初始化>
+
++ (AJToast *)shareInstance
 {
     static dispatch_once_t once;
-    static AJToastHub * instance;
+    static AJToast * instance;
     dispatch_once( &once, ^{
         
-        instance = [[AJToastHub alloc] init];
+        instance = [[AJToast alloc] init];
         
         instance.toastVC  = [[AJToastViewController alloc] init];
         instance.toastVC.view.frame = [UIScreen mainScreen].bounds;
         
-        instance.toastVC.superWindow = instance;
-
+        instance.toastVC.toastWindow = instance;
+        
         instance.frame = [UIScreen mainScreen].bounds;
         instance.windowLevel = UIWindowLevelStatusBar;
         instance.hidden = YES;
@@ -74,49 +71,24 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
     self.toastVC.toastPosition = _toastPosition;
 }
 
-- (void)show
-{
-    self.hidden = NO;
-}
+#pragma mark - Toast
 
 - (void)dismiss
 {
-    if (!self.isShowing) {
-        return;
-    }
-    
     __weak __typeof(&*self) weakSelf = self;
     
-    if (self.currentToastType == ToastTypeHub) {
-        [self.toastVC dismissHub:^{
-            
-            weakSelf.isShowing = NO;
-            
-            if (weakSelf.messageArray.count > 0) {
-                [weakSelf showMessage:nil];
-            }else{
-                weakSelf.hidden = YES;
-            }
-            
-        }];
+    [self.toastVC dismissToast:^{
         
-    }else{
+        weakSelf.isShowing = NO;
         
-        [self.toastVC dismissToast:^{
-            
-            weakSelf.isShowing = NO;
-            
-            if (weakSelf.messageArray.count > 0) {
-                [weakSelf showMessage:nil];
-            }else{
-                weakSelf.hidden = YES;
-            }
-            
-        }];
-    }
+        if (weakSelf.messageArray.count > 0) {
+            [weakSelf showMessage:nil];
+        }else{
+            weakSelf.hidden = YES;
+        }
+        
+    }];
 }
-
-#pragma mark - Toast
 
 #pragma mark 消息队列处理
 - (void)addMessage:(NSString *)message duration:(NSTimeInterval)duration
@@ -173,8 +145,6 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
     
     if (!self.isShowing) {
         
-        self.currentToastType = ToastTypeSimmpleText;
-        
         self.isShowing = YES;
         
         ToastMessage *toast = [self oldestMessage];
@@ -209,27 +179,4 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
     [self showMessage:message afterDelay:dismissTime];
 }
 
-
-#pragma mark - Hub
-
-- (void)showHub:(NSString *)message
-{
-    if (self.isShowing) {
-        return;
-    }
-    
-    self.currentToastType = ToastTypeHub;
-    
-    self.toastVC.messageStr = message;
-    self.hidden = NO;
-    self.isShowing = YES;
-    
-    [self.toastVC showHub:^{
-        //
-    }];
-    
-}
-
 @end
-
-

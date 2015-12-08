@@ -10,7 +10,8 @@
 #import "NSString+Size.h"
 #import "UIView+Extend.h"
 #import <POP/POP.h>
-#import "AJToastHub.h"
+#import "AJToast.h"
+#import "AJHub.h"
 
 #define kScreenWidth            [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight           [UIScreen mainScreen].bounds.size.height
@@ -145,10 +146,10 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     }
     
     // 调整Window大小
-    if (self.superWindow.toastBackgroundCanClick) {
-        self.superWindow.height = 2.0;
+    if (self.toastWindow.toastBackgroundCanClick) {
+        self.toastWindow.height = 2.0;
     }else{
-        self.superWindow.hidden = kScreenHeight;
+        self.toastWindow.height = kScreenHeight;
     }
     
     // 调整内容视图中点
@@ -287,10 +288,10 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     }
     
     // 调整Window大小
-    if (self.superWindow.hubBackgroundCanClick) {
-        self.superWindow.height = 2.0;
+    if (self.hubWindow.hubBackgroundCanClick) {
+        self.hubWindow.height = 2.0;
     }else{
-        self.superWindow.height = kScreenHeight;
+        self.hubWindow.height = kScreenHeight;
     }
 }
 
