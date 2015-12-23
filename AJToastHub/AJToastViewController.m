@@ -16,7 +16,7 @@
 #define kScreenWidth            [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight           [UIScreen mainScreen].bounds.size.height
 #define kToastMessageFont       [UIFont systemFontOfSize:13.0]
-#define kHubMessageFont         [UIFont systemFontOfSize:12.0]
+#define kHubMessageFont         [UIFont systemFontOfSize:13.0]
 #define kDefaultCenter          CGPointMake(kScreenWidth / 2.0, kScreenHeight - 100.0 - DEFAULT_TOAST_HEIGHT)
 #define kBgColor                [UIColor colorWithWhite:0.098 alpha:1.000]
 
@@ -311,46 +311,46 @@ static const CGFloat DEFAULT_ALPHA  = 0.7;
     [self refreshHubView];
     
     // --- 动画 ---
-    // 初始化弹窗中点
-    self.hubContainView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight + self.hubContainView.height);
     
-    // 目标中点Y坐标
-    CGFloat targetY = kScreenHeight / 2.0;
+    self.hubContainView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight / 2.0);
     
-    POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
-    positionAnimation.toValue = @(targetY);
-    positionAnimation.springBounciness = 10;
+    POPSpringAnimation *alphaAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    alphaAnimation.fromValue = @(0.0);
+    alphaAnimation.toValue = @(0.8);
+    alphaAnimation.springSpeed = 18.f;
     
-    POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
-    opacityAnimation.toValue = @(DEFAULT_ALPHA);
+    POPSpringAnimation *scaleAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerSize];
+    scaleAnimation.springBounciness = 12;
+    scaleAnimation.springSpeed = 18.f;
+    scaleAnimation.fromValue = [NSValue valueWithCGSize:CGSizeMake(0.1, 0.1)];
+    scaleAnimation.toValue = [NSValue valueWithCGSize:self.hubContainView.layer.bounds.size];
     
-    [self.hubContainView.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation3"];
-    [self.hubContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation3"];
+    [self.hubContainView.layer pop_addAnimation:alphaAnimation forKey:@"hubAlpha2"];
+    [self.hubContainView.layer pop_addAnimation:scaleAnimation forKey:@"hubScale2"];
     
-    [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL isFinish) {
-        finished();
+    [scaleAnimation setCompletionBlock:^(POPAnimation *animation, BOOL isFinish) {
+            finished();
     }];
 }
 
 - (void)dismissHub:(void (^)())finished
 {
-    // 设置消失时的Y坐标
-    CGFloat animationPositionY = kScreenHeight + self.hubContainView.height;
+    POPSpringAnimation *alphaAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    alphaAnimation.fromValue = @(0.8);
+    alphaAnimation.toValue = @(0.0);
+    alphaAnimation.springSpeed = 18.f;
     
-    POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
-    opacityAnimation.toValue = @(0.0);
+    POPSpringAnimation *scaleAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerSize];
+    scaleAnimation.springBounciness = 1;
+    scaleAnimation.springSpeed = 18.f;
+    scaleAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(0.1, 0.1)];
     
-    POPBasicAnimation *offscreenAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
-    offscreenAnimation.toValue = @(animationPositionY);
-
-    
-    [self.hubContainView.layer pop_addAnimation:offscreenAnimation forKey:@"offscreenAnimation4"];
-    [self.hubContainView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation4"];
-    
+    [self.hubContainView.layer pop_addAnimation:alphaAnimation forKey:@"hubAlpha1"];
+    [self.hubContainView.layer pop_addAnimation:scaleAnimation forKey:@"hubScale1"];
     
     // 完成回调
     __weak __typeof(&*self) weakSelf = self;
-    [offscreenAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
+    [scaleAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finish) {
         
         [weakSelf.hubContainView removeFromSuperview];
         

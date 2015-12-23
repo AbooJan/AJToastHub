@@ -31,6 +31,7 @@
 
 - (void)showToastMessage
 {
+    
     // 背景可以点击测试
     AJToast *toast = [AJToast shareInstance];
     toast.toastBackgroundCanClick = YES;
@@ -48,9 +49,9 @@
 //    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-4-" position:ToastPositionCenter];
 //    [[AJToast shareInstance] showMessage:@"兼职猫，喵了个咪-5-" position:ToastPositionBottom afterDelay:6.0];
 //
-    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
-    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
-    [self performSelector:@selector(otherThreadMesaage4) withObject:nil];
+//    [self performSelector:@selector(otherThreadMesaage2) withObject:nil];
+//    [self performSelector:@selector(otherThreadMesaage3) withObject:nil];
+//    [self performSelector:@selector(otherThreadMesaage4) withObject:nil];
 }
 
 - (void)otherThreadMesaage2
@@ -90,6 +91,7 @@
     
     // 多个Hub显示测试
     AJHub *hub = [AJHub shareInstance];
+    hub.hubBackgroundCanClick = YES;
     [hub showHub:@""];
     [self performSelector:@selector(showNewHub) withObject:nil afterDelay:2.0];
 }
