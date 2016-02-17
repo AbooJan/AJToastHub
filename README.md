@@ -5,6 +5,11 @@
 4. Hub也支持队列显示，如果当前已有一个Hub在显示，一个新的Hub需要显示时，会只显示最新那个Hub。
 5. Hub show 了多少次，就需要dismiss相等次数。谁创建了Hub，谁就要负责dismiss。
 
+### 使用
+```
+pod 'AJToastHub'
+```
+
 ### 支持3种位置显示
 ```objective-c
 typedef NS_ENUM(NSInteger, ToastPosition)
