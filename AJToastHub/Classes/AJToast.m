@@ -51,7 +51,7 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
         instance.toastVC.toastWindow = instance;
         
         instance.frame = [UIScreen mainScreen].bounds;
-        instance.windowLevel = UIWindowLevelStatusBar;
+        instance.windowLevel = [instance topWindowLevel];
         instance.hidden = YES;
         instance.alpha = 1.0;
         instance.rootViewController = instance.toastVC;
@@ -62,6 +62,13 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
     } );
     
     return instance;
+}
+
+- (CGFloat)topWindowLevel
+{
+    NSArray *windows = [[UIApplication sharedApplication] windows];
+    UIWindow *lastWindow = (UIWindow *)[windows lastObject];
+    return  lastWindow.windowLevel + 1.0;
 }
 
 - (void)setToastPosition:(ToastPosition)toastPosition
@@ -141,6 +148,9 @@ static const CGFloat DEFAULT_SHOW_DELAY = 2.0;
 
 - (void)showMessage:(NSString *)message afterDelay:(NSTimeInterval)dismissTime
 {
+    // 调整window等级
+    self.windowLevel = [self topWindowLevel];
+    
     [self addMessage:message duration:dismissTime];
     
     if (!self.isShowing) {

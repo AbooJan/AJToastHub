@@ -32,7 +32,7 @@
         instance.toastVC.hubWindow = instance;
         
         instance.frame = [UIScreen mainScreen].bounds;
-        instance.windowLevel = UIWindowLevelStatusBar;
+        instance.windowLevel = [instance topWindowLevel];
         instance.hidden = YES;
         instance.alpha = 1.0;
         instance.rootViewController = instance.toastVC;
@@ -41,6 +41,13 @@
     } );
     
     return instance;
+}
+
+- (CGFloat)topWindowLevel
+{
+    NSArray *windows = [[UIApplication sharedApplication] windows];
+    UIWindow *lastWindow = (UIWindow *)[windows lastObject];
+    return  lastWindow.windowLevel + 1.0;
 }
 
 
@@ -60,6 +67,9 @@
 
 - (void)showHub:(NSString *)message
 {
+    // 修改window等级
+    self.windowLevel = [self topWindowLevel];
+    
     self.showCount ++;
     
     self.toastVC.hubMessageStr = message;
